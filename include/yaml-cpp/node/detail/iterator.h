@@ -9,6 +9,7 @@
 
 #include "yaml-cpp/dll.h"
 #include "yaml-cpp/node/detail/node_iterator.h"
+#include "yaml-cpp/node/detail/reverse_iterator.h"
 #include "yaml-cpp/node/node.h"
 #include "yaml-cpp/node/ptr.h"
 #include <cstddef>
@@ -41,7 +42,7 @@ class iterator_base {
   };
 
  public:
-  using iterator_category = std::forward_iterator_tag;
+  using iterator_category = std::bidirectional_iterator_tag;
   using value_type = V;
   using difference_type = std::ptrdiff_t;
   using pointer = V*;
@@ -66,6 +67,17 @@ class iterator_base {
   iterator_base<V> operator++(int) {
     iterator_base<V> iterator_pre(*this);
     ++(*this);
+    return iterator_pre;
+  }
+  
+  iterator_base<V>& operator--() {
+    --m_iterator;
+    return *this;
+  }
+
+  iterator_base<V> operator--(int) {
+    iterator_base<V> iterator_pre(*this);
+    --(*this);
     return iterator_pre;
   }
 
